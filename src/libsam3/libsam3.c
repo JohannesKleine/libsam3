@@ -52,9 +52,9 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <sys/ioctl.h>
 #endif
 
 #if defined(__unix__) && !defined(__APPLE__)
