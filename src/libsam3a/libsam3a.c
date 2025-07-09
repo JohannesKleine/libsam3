@@ -37,8 +37,8 @@
 
 #ifdef __MINGW32__
 //#include <winsock.h>
-#include <windows.h>
 #include <winsock2.h>
+#include <windows.h>
 #include <ws2tcpip.h>
 #ifndef MSG_NOSIGNAL
 #define MSG_NOSIGNAL 0
