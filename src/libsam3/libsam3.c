@@ -95,7 +95,7 @@ int sam3tcpSetTimeoutSend(int fd, int timeoutms) {
     struct timeval tv;
     //
     ms2timeval(&tv, timeoutms);
-    return (setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) < 0 ? -1
+    return (setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, (const char*)&tv, sizeof(tv)) < 0 ? -1
                                                                          : 0);
   }
   return -1;
@@ -929,8 +929,8 @@ int sam3CreateSession(Sam3Session *ses, const char *hostname, int port,
         (v = sam3FindField(rep, "DESTINATION")) == NULL ||
         strlen(v) < SAM3_PRIVKEY_MIN_SIZE) {
       if (libsam3_debug)
-        fprintf(stderr, "sam3CreateSession: invalid reply (%ld)...\n",
-                (v != NULL ? strlen(v) : -1));
+        fprintf(stderr, "sam3CreateSession: invalid reply (%zu)...\n",
+                (v != NULL ? strlen(v) : (size_t)-1));
       if (libsam3_debug)
         sam3DumpFieldList(rep);
       sam3FreeFieldList(rep);
@@ -938,7 +938,7 @@ int sam3CreateSession(Sam3Session *ses, const char *hostname, int port,
     }
     // save our keys
     if (strlen(v) > SAM3_PRIVKEY_MAX_SIZE) {
-        fprintf(stderr, "ERROR, Unexpected key size (%li)!\n", strlen(v));
+        fprintf(stderr, "ERROR, Unexpected key size (%zu)!\n", strlen(v));
         goto error;
     }
     strcpy(ses->privkey, v);
@@ -953,8 +953,8 @@ int sam3CreateSession(Sam3Session *ses, const char *hostname, int port,
         (v = sam3FindField(rep, "VALUE")) == NULL ||
         !sam3CheckValidKeyLength(v)) {
       if (libsam3_debug)
-        fprintf(stderr, "sam3CreateSession: invalid NAMING reply (%ld)...\n",
-                (v != NULL ? strlen(v) : -1));
+        fprintf(stderr, "sam3CreateSession: invalid NAMING reply (%zu)...\n",
+                (v != NULL ? strlen(v) : (size_t)-1));
       if (libsam3_debug)
         sam3DumpFieldList(rep);
       sam3FreeFieldList(rep);
