@@ -183,7 +183,7 @@ static int sam3aConnect(uint32_t ip, int port, int *complete) {
   if ((fd = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0)) < 0)
     return -1;
   //
-  setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &val, sizeof(val));
+  setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (const char*)&val, sizeof(val));
   //
   for (;;) {
     struct sockaddr_in addr;
@@ -1044,7 +1044,7 @@ static void aioSesConnected(Sam3ASession *ses) {
   int res;
   socklen_t len = sizeof(res);
   //
-  if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR, &res, &len) == 0 && res == 0) {
+  if (getsockopt(ses->fd, SOL_SOCKET, SO_ERROR, (char*)&res, &len) == 0 && res == 0) {
     // ok, connected
     if (sam3aSesStartHandshake(ses, NULL) < 0)
       sesError(ses, NULL);
@@ -1500,7 +1500,7 @@ static void aioConnConnected(Sam3AConnection *conn) {
   int res;
   socklen_t len = sizeof(res);
   //
-  if (getsockopt(conn->fd, SOL_SOCKET, SO_ERROR, &res, &len) == 0 && res == 0) {
+  if (getsockopt(conn->fd, SOL_SOCKET, SO_ERROR, (char*)&res, &len) == 0 && res == 0) {
     // ok, connected
     if (sam3aConnStartHandshake(conn, NULL) < 0)
       connError(conn, NULL);
